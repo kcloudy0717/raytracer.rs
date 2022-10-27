@@ -1,2 +1,2 @@
 # raytracer.rs
-Peter Shirley's "Ray Tracing in One Weekend" in Rust
+Learning Rust by implementing "Ray Tracing in One Weekend"
