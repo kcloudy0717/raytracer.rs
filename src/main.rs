@@ -1,6 +1,9 @@
 use std::fs::File;
 use std::io::prelude::*;
 
+pub mod vec3;
+use vec3::Vec3;
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 struct Rgb {
     r: u8,
@@ -34,6 +37,18 @@ impl Image {
                 .expect("Failed to write pixel");
         }
     }
+
+    fn write_color(&mut self, x: u32, y: u32, color: &Vec3) {
+        let ir = (255.99 * color.x) as u8;
+        let ig = (255.99 * color.y) as u8;
+        let ib = (255.99 * color.z) as u8;
+
+        self.pixels[((self.height - y - 1) * self.width + x) as usize] = Rgb {
+            r: ir,
+            g: ig,
+            b: ib,
+        };
+    }
 }
 
 fn main() {
@@ -46,14 +61,7 @@ fn main() {
             let r = i as f32 / (width - 1) as f32;
             let g = j as f32 / (height - 1) as f32;
             let b = 0.25;
-            let ir = (255.999 * r) as u8;
-            let ig = (255.999 * g) as u8;
-            let ib = (255.999 * b) as u8;
-            image.pixels[((height - j - 1) * width + i) as usize] = Rgb {
-                r: ir,
-                g: ig,
-                b: ib,
-            };
+            image.write_color(i, j, &Vec3::new(r, g, b));
         }
     }
 
